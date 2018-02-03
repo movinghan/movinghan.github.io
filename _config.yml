@@ -21,7 +21,7 @@ RSS: false
 # weibo_username:     
 # zhihu_username:     
 github_username:    movinghan
-facebook_username:  movinghan@foxmail.com
+#facebook_username:  movinghan@foxmail.com
 
 
 
@@ -97,16 +97,10 @@ service-worker: true
 # Friends
 friends: [
     {
-        title: "WY",
-        href: "http://zhengwuyang.com"
+        title: "HAN Biao",
+        href: "http://www.hanbiao.org"
     },{
-        title: "简书·BY",
-        href: "http://www.jianshu.com/u/e71990ada2fd"
-    },{
-        title: "Apple",
-        href: "https://apple.com"
-    },{
-        title: "Apple Developer",
-        href: "https://developer.apple.com/"
+        title: "Unity3D",
+        href: "https://www.unity3d.com/"
     }
 ]
