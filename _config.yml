@@ -6,7 +6,7 @@ email: movinghan@hotmail.com
 description: "Every failure is leading towards success."
 keyword: "HAN Blog, 韩标的博客,hanbiao,Unity3D,Game"
 url: "https://movinghan.github.io"          # your host, for absolute URL
-baseurl: "blog"      # for example, '/blog' if your blog hosted on 'host/blog'
+baseurl: ""      # for example, '/blog' if your blog hosted on 'host/blog'
 github_repo: "https://github.com/movinghan/movinghan.github.io.git" # you code repository
 
 # Sidebar settings
