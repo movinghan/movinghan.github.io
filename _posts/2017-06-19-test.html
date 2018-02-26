@@ -20,12 +20,7 @@ tags:
 
 	<h2>{{ page.title }}</h2>
 　　<p>最新文章1</p>
-	<iframe src="http://www.hanbiao.org"></iframe>
-　　<ul>
-　　　　{% for post in site.posts %}
-　　　　　　<li>{{ post.date | date_to_string }} <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
-　　　　{% endfor %}
-　　</ul>
+	<iframe src="./pdfs/BRDF.pdf" style="position:absolute; left:0; top:0; height:100%; width:100%; border:0px;"></iframe>
 </body>
 
 </html>
