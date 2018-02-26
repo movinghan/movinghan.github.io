@@ -1,0 +1,693 @@
+---
+layout:     default
+title:      BRDF
+subtitle:   brdf 
+date:       2018-02-26
+author:     HAN
+header-img: img/post-bg-universe.jpg
+catalog: true
+tags:
+    - brdf
+---
+
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=gb2312">
+<meta name=Generator content="Microsoft Word 12 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Helvetica;
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Cambria;
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Times;
+	panose-1:2 2 6 3 5 4 5 2 3 4;}
+@font-face
+	{font-family:"Microsoft Tai Le";
+	panose-1:2 11 5 2 4 2 4 2 2 3;}
+@font-face
+	{font-family:微软雅黑;
+	panose-1:2 11 5 3 2 2 4 2 2 4;}
+@font-face
+	{font-family:"Mongolian Baiti";
+	panose-1:3 0 5 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Lantinghei SC Extralight";}
+@font-face
+	{font-family:"microsoft yahei";
+	panose-1:0 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"\@微软雅黑";
+	panose-1:2 11 5 3 2 2 4 2 2 4;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:10.5pt;
+	font-family:"Calibri","sans-serif";}
+h1
+	{mso-style-link:"标题 1 Char";
+	margin-top:17.0pt;
+	margin-right:0cm;
+	margin-bottom:16.5pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:240%;
+	page-break-after:avoid;
+	font-size:22.0pt;
+	font-family:"Calibri","sans-serif";
+	font-weight:bold;}
+h2
+	{mso-style-link:"标题 2 Char";
+	margin-top:13.0pt;
+	margin-right:0cm;
+	margin-bottom:13.0pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:173%;
+	page-break-after:avoid;
+	font-size:16.0pt;
+	font-family:"Cambria","serif";
+	font-weight:bold;}
+h3
+	{mso-style-link:"标题 3 Char";
+	margin-top:13.0pt;
+	margin-right:0cm;
+	margin-bottom:13.0pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:173%;
+	page-break-after:avoid;
+	font-size:16.0pt;
+	font-family:"Helvetica","sans-serif";
+	color:#222222;
+	background:#F8F9FA;
+	font-weight:bold;}
+h4
+	{mso-style-link:"标题 4 Char";
+	margin-top:14.0pt;
+	margin-right:0cm;
+	margin-bottom:14.5pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:156%;
+	page-break-after:avoid;
+	font-size:14.0pt;
+	font-family:"Cambria","serif";
+	font-weight:bold;}
+h5
+	{mso-style-link:"标题 5 Char";
+	margin-top:14.0pt;
+	margin-right:0cm;
+	margin-bottom:14.5pt;
+	margin-left:0cm;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	line-height:156%;
+	page-break-after:avoid;
+	font-size:14.0pt;
+	font-family:"Calibri","sans-serif";
+	font-weight:bold;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{mso-style-link:"页眉 Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:center;
+	layout-grid-mode:char;
+	border:none;
+	padding:0cm;
+	font-size:9.0pt;
+	font-family:"Calibri","sans-serif";}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{mso-style-link:"页脚 Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	layout-grid-mode:char;
+	font-size:9.0pt;
+	font-family:"Calibri","sans-serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoDocumentMap, li.MsoDocumentMap, div.MsoDocumentMap
+	{mso-style-link:"文档结构图 Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:9.0pt;
+	font-family:宋体;}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{mso-style-link:"纯文本 Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:10.5pt;
+	font-family:宋体;}
+p
+	{margin-right:0cm;
+	margin-left:0cm;
+	font-size:12.0pt;
+	font-family:宋体;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"批注框文本 Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	font-size:9.0pt;
+	font-family:"Calibri","sans-serif";}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	text-align:justify;
+	text-justify:inter-ideograph;
+	text-indent:21.0pt;
+	font-size:10.5pt;
+	font-family:"Calibri","sans-serif";}
+span.Char
+	{mso-style-name:"纯文本 Char";
+	mso-style-link:纯文本;
+	font-family:宋体;}
+span.Char0
+	{mso-style-name:"页眉 Char";
+	mso-style-link:页眉;}
+span.Char1
+	{mso-style-name:"页脚 Char";
+	mso-style-link:页脚;}
+span.1Char
+	{mso-style-name:"标题 1 Char";
+	mso-style-link:"标题 1";
+	font-weight:bold;}
+span.Char2
+	{mso-style-name:"文档结构图 Char";
+	mso-style-link:文档结构图;
+	font-family:宋体;}
+span.2Char
+	{mso-style-name:"标题 2 Char";
+	mso-style-link:"标题 2";
+	font-family:"Cambria","serif";
+	font-weight:bold;}
+span.Char3
+	{mso-style-name:"批注框文本 Char";
+	mso-style-link:批注框文本;}
+span.3Char
+	{mso-style-name:"标题 3 Char";
+	mso-style-link:"标题 3";
+	font-family:"Helvetica","sans-serif";
+	color:#222222;
+	font-weight:bold;}
+span.4Char
+	{mso-style-name:"标题 4 Char";
+	mso-style-link:"标题 4";
+	font-family:"Cambria","serif";
+	font-weight:bold;}
+span.5Char
+	{mso-style-name:"标题 5 Char";
+	mso-style-link:"标题 5";
+	font-weight:bold;}
+ /* Page Definitions */
+ @page Section1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 87.65pt 72.0pt 87.65pt;
+	layout-grid:15.6pt;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=ZH-CN link=blue vlink=purple style='text-justify-trim:punctuation'>
+
+<div class=Section1 style='layout-grid:15.6pt'>
+
+<h1><span lang=EN-US>BRDF</span></h1>
+
+<h2 style='margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN-US>1.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span><span
+style='font-family:宋体'>数学概念</span></h2>
+
+<h3><span lang=EN-US>1.1</span><span style='font-family:宋体'>球坐标系</span></h3>
+
+<p class=MsoNormal><span style='font-family:宋体;background:white'>是一种利用<b>球坐标</b></span><b><span
+lang=EN-US style='background:white'>(</span></b><span lang=EN-US>r,</span><span
+style='font-family:宋体'>θ</span><span lang=EN-US>,</span><span style='font-family:
+宋体'>Φ</span><span lang=EN-US>)</span><span style='font-family:宋体'>表示一个点在三维空间中的位置的三维正交坐标系。</span><span
+lang=EN-US>r</span><span style='font-family:宋体'>表示向量的长度，θ表示向量和</span><span
+lang=EN-US>Z</span><span style='font-family:宋体'>轴的夹角</span><span
+style='font-family:宋体'>，</span><span style='font-family:宋体'>Φ表示向量在</span><span
+lang=EN-US>x-y</span><span style='font-family:宋体'>平面上的投影和</span><span
+lang=EN-US>x</span><span style='font-family:宋体'>轴的逆时针夹角。</span></p>
+
+<p class=MsoNormal><span lang=EN-US><img width=560 height=499
+src="BRDF.files/image001.gif"></span></p>
+
+<h3><span lang=EN-US>1.2</span><span style='font-family:宋体'>立体角</span></h3>
+
+<p class=MsoPlainText>以观测点为球心，构造一个单位球面；任意物体投影到该单位球面上的投影面积，即为该物体相对于该观测点的立体角。立体角是单位球面上的一块面积，这和“平面角是单位圆上的一段弧长”类似。</p>
+
+<p class=MsoPlainText><span lang=EN-US><img width=250 height=258
+src="BRDF.files/image002.gif" alt=Steradian.svg><img width=300 height=337
+id="图片 2" src="BRDF.files/image003.gif"></span></p>
+
+<p class=MsoPlainText>单位为球面度<span lang=EN-US>(</span><span lang=EN-US
+style='font-family:"微软雅黑","sans-serif";color:#555555;background:white'>Steradian,</span><span
+style='font-family:"微软雅黑","sans-serif";color:#555555;background:white'>简写<span
+lang=EN-US>Sr</span></span><span lang=EN-US>)</span>。面积为半径平方<span lang=EN-US>(r2)</span>的球表面对球心的张角等于<span
+lang=EN-US>1</span>球面度。因为球的表面积是<span lang=EN-US>4</span>π<span lang=EN-US>r<sup>2</sup></span>，所以，整个球面有<span
+lang=EN-US>4</span>π球面度。</p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoPlainText>由球表面积积分，可以得到立体角的积分形式：</p>
+
+<p class=MsoPlainText><span lang=EN-US><img width=240 height=50 id="图片 27"
+src="BRDF.files/image004.gif"></span></p>
+
+<p class=MsoNormal><span lang=EN-US><img width=408 height=396
+src="BRDF.files/image005.gif"></span></p>
+
+<p class=MsoPlainText><span lang=EN-US>&nbsp;</span></p>
+
+<h3><span lang=EN-US>1.5 Foreshortening </span></h3>
+
+<p class=MsoNormal><span style='font-family:宋体;background:white'>投影面描述了一个物体表面的微小区域在某个视线方向上的可见面积。</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:10.0pt;font-family:"Times","serif"'><img
+width=245 height=75 id="图片 3" src="BRDF.files/image006.gif"><img width=271
+height=177 src="BRDF.files/image007.gif"></span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h2 style='margin-left:18.0pt;text-indent:-18.0pt'><span lang=EN-US>2.<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp; </span></span><span
+lang=EN-US>Radiometry(</span><span style='font-family:宋体'>辐射度量学</span><span
+lang=EN-US>)</span></h2>
+
+<h3 style='margin-left:29.0pt;text-indent:-29.0pt'><span lang=EN-US>2.1<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp; </span></span><span
+lang=EN-US>Radiant Energy</span></h3>
+
+<p class=MsoNormal><span style='font-family:宋体'>辐射能量</span><span lang=EN-US
+style='font-family:"Helvetica","sans-serif";color:#222222;background:#F8F9FA'>Q</span><sub><span
+lang=EN-US style='font-size:10.0pt;font-family:"Helvetica","sans-serif";
+color:#222222'>e</span></sub><span lang=EN-US>,</span><span style='font-family:
+宋体'>单位焦耳</span><span lang=EN-US><a
+href="https://zh.wikipedia.org/wiki/%E7%84%A6%E8%80%B3" title=焦耳><span
+style='font-family:"Helvetica","sans-serif";color:#0B0080;text-decoration:none'>J</span></a></span></p>
+
+<h3><span lang=EN-US>2.2 Radiant flux</span></h3>
+
+<p class=MsoNormal><span style='font-family:宋体'>辐射通量</span><span lang=EN-US
+style='font-family:"Helvetica","sans-serif";color:#222222;background:#F8F9FA'>Φ</span><sub><span
+lang=EN-US style='font-size:10.0pt;font-family:"Helvetica","sans-serif";
+color:#222222'>e</span></sub><span lang=EN-US style='font-size:10.0pt;
+font-family:"Microsoft Tai Le","sans-serif"'>,</span><span style='font-family:
+宋体'>单位瓦特</span><span lang=EN-US><a
+href="https://zh.wikipedia.org/wiki/%E7%93%A6%E7%89%B9"><span style='font-family:
+"Helvetica","sans-serif";color:#0B0080;text-decoration:none'>W</span></a></span><span
+lang=EN-US style='font-size:10.0pt;font-family:"Times","serif"'>,</span><span
+style='font-family:宋体'>每单位时间的辐射能量，也可称为光通量、辐射功率。</span></p>
+
+<h3><span lang=EN-US>2.3 Irradiance</span></h3>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:10.0pt;font-family:"Lantinghei SC Extralight"'>辐照度</span><span
+lang=EN-US style='font-family:"Helvetica","sans-serif";color:#222222;
+background:#F8F9FA'>E</span><sub><span lang=EN-US style='font-size:10.0pt;
+font-family:"Helvetica","sans-serif";color:#222222'>e</span></sub><span
+lang=EN-US style='font-size:10.0pt;font-family:"Microsoft Tai Le","sans-serif"'>,</span><span
+style='font-family:宋体'>单位瓦特每平方米</span><span lang=EN-US style='font-family:"Helvetica","sans-serif";
+color:#222222;background:#F8F9FA'>W·m</span><sup><span lang=EN-US
+style='font-size:10.0pt;font-family:"Helvetica","sans-serif";color:#222222'>&#8722;2</span></sup><span
+lang=EN-US style='font-size:10.0pt;font-family:"Microsoft Tai Le","sans-serif"'>，</span><span
+style='font-family:宋体'>用来表示入射表面单位面积上的辐射通量。表达了辐射通量对于面积的密度。也被称为辉度。</span></p>
+
+<h3><span lang=EN-US>2.4 Radiant Exitance</span></h3>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:10.0pt;font-family:"Lantinghei SC Extralight"'>辐射出射度</span><span
+lang=EN-US style='font-family:"Helvetica","sans-serif";color:#222222;
+background:#F8F9FA'>M</span><sub><span lang=EN-US style='font-size:10.0pt;
+font-family:"Helvetica","sans-serif";color:#222222'>e</span></sub><span
+lang=EN-US style='font-size:10.0pt;font-family:"Microsoft Tai Le","sans-serif"'>,</span><span
+style='font-family:宋体'>单位瓦特每平方米</span><span lang=EN-US style='font-family:"Helvetica","sans-serif";
+color:#222222;background:#F8F9FA'>W·m</span><sup><span lang=EN-US
+style='font-size:10.0pt;font-family:"Helvetica","sans-serif";color:#222222'>&#8722;2</span></sup><span
+lang=EN-US style='font-size:10.0pt;font-family:"Microsoft Tai Le","sans-serif"'>，</span><span
+style='font-family:宋体'>用来表示单位表面上出射的辐射通量。</span></p>
+
+<h3><span lang=EN-US>2.5 Radiant Intensity</span></h3>
+
+<p class=MsoNormal><span style='font-family:宋体'>辐射强度</span><i><span lang=EN-US
+style='font-family:"Helvetica","sans-serif";color:#222222'>I</span></i><sub><span
+lang=EN-US style='font-size:8.5pt;font-family:"Helvetica","sans-serif";
+color:#222222'>e,Ω</span></sub><span lang=EN-US style='font-size:10.0pt;
+font-family:"Microsoft Tai Le","sans-serif"'>,</span><span style='font-family:
+宋体'>单位</span><span lang=EN-US><a
+href="https://zh.wikipedia.org/wiki/%E7%93%A6%E7%89%B9"><span lang=EN-US
+style='font-family:宋体;color:windowtext;text-decoration:none'><span lang=EN-US>瓦特</span></span></a></span><span
+style='font-family:宋体'>每</span><span lang=EN-US><a
+href="https://zh.wikipedia.org/wiki/%E7%90%83%E9%9D%A2%E5%BA%A6" title=球面度><span
+lang=EN-US style='font-family:宋体;color:windowtext;text-decoration:none'><span
+lang=EN-US>球面度</span></span></a></span><span lang=EN-US style='font-family:
+"Helvetica","sans-serif";color:#222222;background:#F8F9FA'>W·sr</span><sup><span
+lang=EN-US style='font-size:10.0pt;font-family:"Helvetica","sans-serif";
+color:#222222'>&#8722;1</span></sup><span style='font-family:宋体'>，单位立体角上的辐射通量</span><span
+lang=EN-US>,</span><span style='font-family:宋体'>也被称为发光强度。</span></p>
+
+<h3><span lang=EN-US>2.6Radiance</span></h3>
+
+<p class=MsoNormal><span style='font-family:宋体'>辐射率</span><i><span lang=EN-US
+style='font-family:"Helvetica","sans-serif";color:#222222'>L</span></i><sub><span
+lang=EN-US style='font-size:8.5pt;font-family:"Helvetica","sans-serif";
+color:#222222'>e,Ω</span></sub><span lang=EN-US>,</span><span style='font-family:
+宋体'>单位</span><span lang=EN-US><a
+href="https://zh.wikipedia.org/wiki/%E7%93%A6%E7%89%B9"><span lang=EN-US
+style='font-family:宋体;color:windowtext;text-decoration:none'><span lang=EN-US>瓦特</span></span></a></span><span
+style='font-family:宋体'>每</span><span lang=EN-US><a
+href="https://zh.wikipedia.org/wiki/%E7%90%83%E9%9D%A2%E5%BA%A6" title=球面度><span
+lang=EN-US style='font-family:宋体;color:windowtext;text-decoration:none'><span
+lang=EN-US>球面度</span></span></a></span><span style='font-family:宋体'>每平方米</span><span
+lang=EN-US style='font-family:"Helvetica","sans-serif";color:#222222;
+background:#F8F9FA'>W·sr</span><sup><span lang=EN-US style='font-size:10.0pt;
+font-family:"Helvetica","sans-serif";color:#222222'>&#8722;1</span></sup><span
+lang=EN-US style='font-family:"Helvetica","sans-serif";color:#222222;
+background:#F8F9FA'>·m</span><sup><span lang=EN-US style='font-size:10.0pt;
+font-family:"Helvetica","sans-serif";color:#222222'>&#8722;2</span></sup><span
+style='font-family:宋体'>，单位立体角单位投影面积上的辐射通量。</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>表示了物体表面沿某一方向的光的亮度。可以将辐射率理解为物体表面的微面元所接收的来自于某方向光源的单位面积的光通量。</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-family:"Times","serif"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:10.0pt;font-family:"Times","serif"'>&nbsp;</span></p>
+
+<h2><span lang=EN-US>3. BRDF</span></h2>
+
+<p class=MsoNormal><span lang=EN-US style='background:white'>BRDF(Bidirectional
+Reflectance Distribution Function,</span><span style='font-family:宋体;
+background:white'>译作双向反射分布函</span><span style='font-family:宋体'>数</span><span
+lang=EN-US>)</span><span style='font-family:宋体'>描述光如何从给定的两个方向（入射光方向</span><span
+lang=EN-US>l</span><span style='font-family:宋体'>和出射方向</span><span lang=EN-US>v</span><span
+style='font-family:宋体'>）在表面进行反射的函数。</span></p>
+
+<h3><span lang=EN-US>BRDF</span><span style='font-family:宋体'>的定义</span></h3>
+
+<h4><span lang=EN-US>BRDF</span><span style='font-family:宋体'>的微分形式</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>定义为出射辐射率的微分（</span><span
+lang=EN-US>differential outgoing radiance</span><span style='font-family:宋体'>）和入射辐照度的微分（</span><span
+lang=EN-US>differential incoming irradiance</span><span style='font-family:
+宋体'>）之比：</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:10.0pt;font-family:"Times","serif"'><img
+border=0 width=168 height=61 id="图片 5" src="BRDF.files/image008.gif"></span></p>
+
+<h4><span lang=EN-US>BRDF</span><span style='font-family:宋体'>的非微分形式</span></h4>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=173 height=66 id="图片 6"
+src="BRDF.files/image009.gif"></span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h4><span lang=EN-US>BRDF</span><span style='font-family:宋体'>的着色方程</span></h4>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=560 height=285 id="图片 8"
+src="BRDF.files/image010.gif"><img border=0 width=288 height=73
+src="BRDF.files/image011.gif"></span></p>
+
+<h3><span lang=EN-US>BRDF</span><span style='font-family:宋体'>的特性</span></h3>
+
+<h4><span lang=EN-US style='background:white'>Helmholtz Reciprocity</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体;background:white'>赫姆霍兹对称性或者赫姆霍兹可行性，意思为交换入射光和反射光的方向，</span><span
+lang=EN-US style='background:white'>brdf</span><span style='font-family:宋体;
+background:white'>函数的值相等：</span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=148 height=51
+src="BRDF.files/image012.jpg"></span></p>
+
+<h4><span lang=EN-US>Conservation Of Energy</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体;background:white'>能量守恒定律指出：入射光或被反射，或被次表面散射，或被吸收。入射光的能量应该等于反射部分能量与次表面散射部分能量以及被吸收的能量之和。</span></p>
+
+<h3><span lang=EN-US>BRDF</span><span style='font-family:宋体'>的延展</span></h3>
+
+<h4><span lang=EN-US>Subsurface Scattering</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>次表面散射描述的现象是，当光接触物体的表面时，一部分被反射出去（光的反射）一部分进入物体的表面（光的折射或传播）。进入物体表面的光或被吸收，或经过多次的散射最终传播出物体表面。</span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=560 height=178
+src="BRDF.files/image013.gif"></span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h4><span lang=EN-US>BSSRDF</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>入射光在一个入射点接触物体表面，进入内部的光经过多次散射后，从表面的其他位置射出。观察点距离入射点一定距离时，可以认为入射点和出射点是相同的位置。这也是</span><span
+lang=EN-US>BRDF</span><span style='font-family:宋体'>考虑的情况。</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>双向表面散射分布函数</span><span
+lang=EN-US>Bidirectional Surface Scattering Reflectance Distribution Function</span><span
+style='font-family:宋体'>还需要考虑入射光和出射光的位置。</span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=560 height=311
+src="BRDF.files/image014.gif"
+alt="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/BSSDF01_400.svg/720px-BSSDF01_400.svg.png"></span></p>
+
+<h4><span lang=EN-US>SVBRDF(SBRDF)</span></h4>
+
+<p class=MsoNormal><span lang=EN-US>BRDF</span><span style='font-family:宋体'>认为物体表面的材质都是均匀统一的，不同的位置都具有相同的函数值。这在现实中基本不可能，即使由同一种材质构成，表面上不同的位置，粗糙度、腐蚀程度、污迹分布等可能都不一样。</span><span
+lang=EN-US>SVBRDF(Spatially varying BRDF or Spatial BRDF)</span><span
+style='font-family:宋体'>除了入射方向、视点方向外，还要考虑空间上的位置。</span></p>
+
+<h4><span lang=EN-US>BSDF</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>即使描述了更一般情况的</span><span
+lang=EN-US>BSSRDF</span><span style='font-family:宋体'>，仍然忽略显示中非常重要的一些因素，如光的偏振。此外，也没有考虑光穿过物体表面传播的情况，只处理了光的反射。</span><span
+lang=EN-US>BSDF</span><span style='font-family:宋体'>（</span><span lang=EN-US>S -Scattering</span><span
+style='font-family:宋体'>）定义了两个</span><span lang=EN-US>BRDF</span><span
+style='font-family:宋体'>和两个</span><span lang=EN-US>BTDF</span><span
+style='font-family:宋体'>（</span><span lang=EN-US>T abbr for Transmittance</span><span
+style='font-family:宋体'>）。</span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=364 height=488 id="图片 1"
+src="BRDF.files/image015.jpg"
+alt="https://upload.wikimedia.org/wikipedia/en/d/d8/BSDF05_800.png"></span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h3><span style='font-family:宋体'>微几何</span></h3>
+
+<p class=MsoNormal><span style='font-family:宋体'>物体的表面在宏观上是平的，但在微观上看，可以呈现出很多细节，如表现出一定的粗糙度，会影响光的反射。</span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=560 height=272 id="图片 4"
+src="BRDF.files/image016.jpg"></span></p>
+
+<h4><span lang=EN-US>Smoothness</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>越光滑的表面，微几何表面的法线的分布越往宏观法线方向集中。更广范围的法线分布，反射出的光的方向也越光，视觉上的高光范围也就越大。</span></p>
+
+<h4><span lang=EN-US>Anisotropy</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>大部分的微几何表面上的法线分布，是旋转后对称的，也即各向同性的（</span><span
+lang=EN-US>isotropic</span><span style='font-family:宋体'>）。也有部分是各向异性的</span> <span
+style='font-family:宋体'>（</span><span lang=EN-US>anisotropic</span><span
+style='font-family:宋体'>），入射光的方向影响反射的结果。</span></p>
+
+<h4><span lang=EN-US>Shadowing</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>微几何上被其他部分挡住光源，会产生阴影。</span></p>
+
+<h4><span lang=EN-US>Masking</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>微几何上由于被其他部分挡住视线，会产生遮罩。</span></p>
+
+<h3><span style='font-family:宋体'>微表面理论</span></h3>
+
+<p class=MsoNormal><span style='font-family:宋体'>微表面模型</span><span lang=EN-US>Microfacet
+Thoery</span><span style='font-family:宋体'>从数学上描述微几何。微几何是一系列微表面的集合。</span></p>
+
+<h4><span style='font-family:宋体'>微表面</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>每个微表面（</span><span lang=EN-US>Microfacet</span><span
+style='font-family:宋体'>）是一个微小的、平的、</span><span lang=EN-US>fresnel</span><span
+style='font-family:宋体'>反射的镜面。</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h4><span lang=EN-US>Half vector</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>光的入射方向</span><span lang=EN-US>l</span><span
+style='font-family:宋体'>，视线方向</span><span lang=EN-US>v</span><span
+style='font-family:宋体'>，位于他们中间的方向即为</span><span lang=EN-US>half vector</span><span
+style='font-family:宋体'>，用</span><span lang=EN-US>h</span><span
+style='font-family:宋体'>表示。只有法线为</span><span lang=EN-US>h</span><span
+style='font-family:宋体'>的微表面反射的光才能进入视线。</span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=560 height=138
+src="BRDF.files/image017.jpg"></span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=560 height=357
+id="图片 22" src="BRDF.files/image018.jpg"></span></p>
+
+<h4><span lang=EN-US>NDF</span></h4>
+
+<p class=MsoNormal><span style='font-family:宋体'>用表面的法线分布函数</span><span
+lang=EN-US>NDF(Normal Distribution Function)</span><span style='font-family:
+宋体'>来描述表面的特征。</span><span lang=EN-US>D(h)</span><span style='font-family:宋体'>来描述朝向是</span><span
+lang=EN-US>h</span><span style='font-family:宋体'>的微表面数占微表面总数的比例。</span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>所有方向上的法线分布函数的和应该等于</span><span
+lang=EN-US>1</span><span style='font-family:宋体'>。</span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=360 height=99 id="图片 16"
+src="BRDF.files/image019.jpg"></span></p>
+
+<h2><span lang=EN-US>4. <a name="_GoBack"></a>BRDF</span><span
+style='font-family:宋体'>模型</span></h2>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=560 height=52 id="图片 7"
+src="BRDF.files/image020.jpg"></span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=560 height=122
+id="图片 10" src="BRDF.files/image021.jpg"></span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US style='font-size:11.5pt;font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>F</span><span
+style='font-family:宋体'>为菲涅尔反射函数</span><span lang=EN-US>(Fresnel </span><span
+style='font-family:宋体'>函数</span><span lang=EN-US>)</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US style='font-size:11.5pt;font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>G</span><span
+style='font-family:宋体'>为阴影遮罩函数（</span><span lang=EN-US>Geometry Factor</span><span
+style='font-family:宋体'>，几何因子），即未被</span><span lang=EN-US>shadow</span><span
+style='font-family:宋体'>或</span><span lang=EN-US>mask</span><span
+style='font-family:宋体'>的比例</span></p>
+
+<p class=MsoListParagraph style='margin-left:21.0pt;text-indent:-21.0pt'><span
+lang=EN-US style='font-size:11.5pt;font-family:Wingdings'>l<span
+style='font:7.0pt "Times New Roman"'>&nbsp; </span></span><span lang=EN-US>D</span><span
+style='font-family:宋体'>为法线分布函数</span><span lang=EN-US>(NDF)</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:11.5pt;font-family:"microsoft yahei","serif"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span style='font-size:11.5pt;font-family:宋体'>不同的</span><span
+lang=EN-US style='font-size:11.5pt;font-family:"microsoft yahei","serif"'>f()</span><span
+style='font-size:11.5pt;font-family:宋体'>函数实现，即为不同的</span><span lang=EN-US
+style='font-size:11.5pt;font-family:"microsoft yahei","serif"'>BRDF</span><span
+style='font-size:11.5pt;font-family:宋体'>模型。实现不同的</span><span lang=EN-US
+style='font-size:11.5pt;font-family:"microsoft yahei","serif"'>f()</span><span
+style='font-size:11.5pt;font-family:宋体'>函数可拆分为实现不同的</span><span lang=EN-US
+style='font-size:11.5pt;font-family:"microsoft yahei","serif"'>D()</span><span
+style='font-size:11.5pt;font-family:宋体'>、</span><span lang=EN-US
+style='font-size:11.5pt;font-family:"microsoft yahei","serif"'>G()</span><span
+style='font-size:11.5pt;font-family:宋体'>函数：</span></p>
+
+<h4><span lang=EN-US>Lambert</span></h4>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:11.5pt;font-family:"microsoft yahei","serif"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:11.5pt;font-family:"microsoft yahei","serif"'><img
+border=0 width=375 height=87 id="图片 43" src="BRDF.files/image022.jpg"></span></p>
+
+<h4><span lang=EN-US>NDF</span></h4>
+
+<h5><span lang=EN-US>Phong NDF</span></h5>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=392 height=84 id="图片 19"
+src="BRDF.files/image023.jpg"></span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h5><span lang=EN-US>Beckmann NDF</span></h5>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=492 height=116
+id="图片 25" src="BRDF.files/image024.jpg"></span></p>
+
+<h5><span lang=EN-US>TrowBridge-Reitz( GGX) NDF</span></h5>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=495 height=108
+id="图片 28" src="BRDF.files/image025.jpg"></span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h4><span lang=EN-US>Geometry Factor</span></h4>
+
+<h5><span lang=EN-US>Simplest Possible Visibility</span></h5>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=522 height=65 id="图片 34"
+src="BRDF.files/image026.jpg"></span></p>
+
+<p class=MsoNormal><span style='font-family:宋体'>即：</span><span lang=EN-US><img
+border=0 width=243 height=83 id="图片 31" src="BRDF.files/image027.jpg"></span></p>
+
+<h5><span lang=EN-US>Cook-Torrance</span></h5>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=560 height=106
+id="图片 37" src="BRDF.files/image028.jpg"></span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US style='font-size:11.5pt;font-family:"microsoft yahei","serif"'>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<h5><span lang=EN-US>Kelemen-Szirmay-Kalos</span></h5>
+
+<p class=MsoNormal><span lang=EN-US><img border=0 width=444 height=134
+id="图片 40" src="BRDF.files/image029.jpg"></span></p>
+
+</div>
+
+</body>
+
+</html>
